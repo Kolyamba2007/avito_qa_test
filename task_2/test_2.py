@@ -2,16 +2,19 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from pathlib import Path
 import pickle
 import os
 
-output_dir = f"{os.getcwd()}/output"
+file_dir = Path(__file__).resolve().parent
+
+output_dir = f"{file_dir}/output"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
+cookies_path = f"{file_dir}/cookies.pkl"
 cookies_exist = False
-cookies = "cookies.pkl"
-if os.path.exists(f"{os.getcwd()}/{cookies}"):
+if os.path.exists(cookies_path):
     cookies_exist = True
 
 options = Options()
@@ -41,12 +44,12 @@ def test_authorized_user():
     driver.get("https://www.avito.ru/avito-care/eco-impact")
 
     if cookies_exist:
-        for cookie in pickle.load(open(f"{os.getcwd()}/{cookies}", "rb")):
+        for cookie in pickle.load(open(cookies_path, "rb")):
             driver.add_cookie(cookie)
         driver.refresh()
     else:
         login()
-        pickle.dump(driver.get_cookies(), open(f"{os.getcwd()}/{cookies}", "wb"))
+        pickle.dump(driver.get_cookies(), open(cookies_path, "wb"))
 
     COUNTERS = (
         "xpath",

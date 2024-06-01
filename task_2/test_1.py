@@ -2,9 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from pathlib import Path
 import os
 
-output_dir = f"{os.getcwd()}/output"
+output_dir = f"{Path(__file__).resolve().parent}/output"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
